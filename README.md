@@ -100,10 +100,6 @@ Example like
 #BSUB -q $queue
 ```
 
-# Availability
-
-HERA is currently released under a commercial license but it is free for academic or research purpose. 
-
 # Results
 
 After the successful submission of pipeline.sh, HERA will take a few steps to get the reassembled genome sequences with the name of "genome_name-Final_Genome_HERA.fasta". HERA mainly includes the following five parts: 
@@ -357,6 +353,10 @@ perl $Working_Script/22-Filling-Gap.pl Scaffold2Ctg_Gap.txt Prosudo_ScaffoldNonE
 #formating the final genome
 cat SuperContig.fasta ../$Bionano_NonScaffolded_Contig |awk 'BEGIN{count=1;}{if($0~/^>/){print ">SuperContig"count"END";count++;}else{print $0;}}' >../$genome_name-Final_Genome_HERA.fasta
 ```
+
+# Availability
+
+HERA is currently released under a commercial license but it is free for academic or research purpose. 
 
 # Citing HERA
 
