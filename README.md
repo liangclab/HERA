@@ -100,6 +100,9 @@ Example like
 #BSUB -q $queue
 ```
 
+# Availability
+
+HERA is currently released under a commercial license but it is free for academic or research purpose. 
 
 # Results
 
