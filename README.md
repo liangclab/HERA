@@ -5,7 +5,7 @@ HERA is a local assembly tool using assembled contigs and self-corrected long re
 It is important to note that even though HERA can be used to improve the sequence contiguity of highly heterozygous genomes, it require HiC data (and better also with BioNano data) to resolve the haplotype sequences. A new pipeline to do this is being developed but it is not included here.
 
 # Installation
-Assume the software HERA is under directory HERA. All the executable files of HERA package should be put in HERA/bin.
+Please download HERA.zip for all files for simplicity. Assume the software HERA is under directory HERA. All the executable files of HERA package should be put in HERA/bin.
 
 The running of HERA requires a few other software programs. 
 1. Downloading and installing bwa-0.7.10
