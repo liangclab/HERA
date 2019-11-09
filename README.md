@@ -356,6 +356,10 @@ $Working_Script/22-Filling-Gap Scaffold2Ctg_Gap.txt Prosudo_ScaffoldNonEnzyme2Co
 cat SuperContig.fasta ../$Bionano_NonScaffolded_Contig |awk 'BEGIN{count=1;}{if($0~/^>/){print ">SuperContig"count"END";count++;}else{print $0;}}' >../$genome_name-Final_Genome_HERA.fasta
 ```
 
+# Limitation
+
+HERA is highly efficient for generating highly contiguous and complete or nearly complete sequences for small genomes such as fungi as well as homozygous genomes. HERA can be applied to a genome for several rounds to get desired results. For highly heterozygous genomes, a lot of manual work may be required.
+
 # Citing HERA
 
    Du, H., Liang, C. (2018). Assembly of chromosome-scale contigs by efficiently resolving repetitive sequences with long reads. bioRxiv    doi: https://doi.org/10.1101/345983
