@@ -5,7 +5,7 @@ HERA is a local assembly tool using assembled contigs and self-corrected long re
 It is important to note that even though HERA can be used to improve the sequence contiguity of highly heterozygous genomes, it require HiC data (and better also with BioNano data) to resolve the haplotype sequences. A new pipeline to do this is being developed but it is not included here.
 
 # Installation
-Please download HERA.zip for all files for simplicity. Assume the software HERA is under directory HERA. All the executable files of HERA package should be put in HERA/bin.
+Assume the software HERA is under directory HERA. All the executable files of HERA package should be put in HERA/bin.
 
 The running of HERA requires a few other software programs. 
 1. Downloading and installing bwa-0.7.10
@@ -23,11 +23,11 @@ The running of HERA requires a few other software programs.
    
 # Quick Start
 
-### Step 0: Correct the noisy long reads by CANU and finish genome assembly by CANU or MECAT, or FALCON
+### Step 0: Correct the noisy long reads by CANU and finish genome assembly by CANU or MECAT, or FALCON or other assemblers to generate contigs with high sequence accuracy.
 
 ### Step 1: Create a config file
 
-Before running HERA, you need to create a config file template. HERA provides two kinds of running patterns for connecting the whole genome assembled contigs and filling the gaps between the paired contigs with or without the BioNano maps.  
+Before running HERA, you need to create a config file template. HERA provides two kinds of running patterns for connecting the whole-genome assembled contigs and filling the gaps between the paired contigs with or without the BioNano maps.  
 
 The template looks like
 ``` shell
@@ -356,13 +356,13 @@ $Working_Script/22-Filling-Gap Scaffold2Ctg_Gap.txt Prosudo_ScaffoldNonEnzyme2Co
 cat SuperContig.fasta ../$Bionano_NonScaffolded_Contig |awk 'BEGIN{count=1;}{if($0~/^>/){print ">SuperContig"count"END";count++;}else{print $0;}}' >../$genome_name-Final_Genome_HERA.fasta
 ```
 
-# Limitation
+# Usage Limitations
 
-HERA is highly efficient for generating highly contiguous and complete or nearly complete sequences for small genomes such as fungi as well as homozygous genomes. HERA can be applied to a genome for several rounds to get desired results. For highly heterozygous genomes, a lot of manual work may be required.
+HERA is highly efficient for generating highly contiguous and complete or nearly complete sequences for small genomes such as fungi as well as homozygous genomes. HERA may be applied to a genome for several rounds to get desired results. For highly heterozygous genomes, a lot of manual work may be required.
 
 # Citing HERA
 
-   Du, H., Liang, C. (2018). Assembly of chromosome-scale contigs by efficiently resolving repetitive sequences with long reads. bioRxiv    doi: https://doi.org/10.1101/345983
+Du, H., Liang, C. (2018). Assembly of chromosome-scale contigs by efficiently resolving repetitive sequences with long reads. bioRxiv    doi: https://doi.org/10.1101/345983
 
 #  Seeking Help
 
