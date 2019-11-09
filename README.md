@@ -356,10 +356,6 @@ $Working_Script/22-Filling-Gap Scaffold2Ctg_Gap.txt Prosudo_ScaffoldNonEnzyme2Co
 cat SuperContig.fasta ../$Bionano_NonScaffolded_Contig |awk 'BEGIN{count=1;}{if($0~/^>/){print ">SuperContig"count"END";count++;}else{print $0;}}' >../$genome_name-Final_Genome_HERA.fasta
 ```
 
-# Availability
-
-HERA is currently released under a commercial license but it is free for academic or research use. All codes in HERA are packed into a Tarball for users' easy use. 
-
 # Citing HERA
 
    Du, H., Liang, C. (2018). Assembly of chromosome-scale contigs by efficiently resolving repetitive sequences with long reads. bioRxiv    doi: https://doi.org/10.1101/345983
