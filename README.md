@@ -5,7 +5,6 @@ HERA is a local assembly tool using assembled contigs and self-corrected long re
 It is important to note that even though HERA can be used to improve the sequence contiguity of highly heterozygous genomes, it require HiC data (and better also with BioNano data) to resolve the haplotype sequences. A new pipeline to do this is being developed but it is not included here.
 
 # Installation
-Assume the software HERA is under directory HERA. All the executable files of HERA package should be put in HERA/bin.
 
 The running of HERA requires a few other software programs. 
 1. Downloading and installing bwa-0.7.10
@@ -18,7 +17,50 @@ The running of HERA requires a few other software programs.
 3. Downloading and installing DAZZ_DB
 
    https://github.com/thegenemyers/DAZZ_DB
+   
+ # The example of running HERA
+ 
+ Assume the working directory is "~/"
+ 
+ 1. Download and unzip HERA, and then generate a folder named "HERAv1.0-master". 
+    
+    unzip HERAv1.0-master.zip
+    
+ 2. Set scripts to executable.
+    
+    cd HERAv1.0-master/ && chmod 777 *
+    
+ 3. Generate the folder name "Test" and files for testing.
+ 
+    cd ../ && mkdir Test
+    
+    cd Test/ && cp ../HERAv1.0-master/pipeline.sh ./
+    
+    mv ../HERAv1.0-master/*.fasta ./
+    
+ 4. Modify the configuration part in pipeline.sh.
 
+    set genome_seq=~/Test/Test_Genome.fasta
+    
+    set Corrected_Pacbio=~/Test/Test_CorrectedPacbio.fasta
+    
+    set Working_Script=~/HERAv1.0-master/
+    
+    set DAZZ_DB=~/DAZZ_DB-master/
+    
+    set DALIGNER=~/DALIGNER-master/
+    
+    set MinPathNum=3
+    
+      
+ 5. Run the pipeline.sh, assuming that the job scheduling system of the cluster has been configured well in the scripts of "04-Qsub-Mapping2Ctg.pl", "08-qsub_job_index.pl", "09-Qsub-Pair_Alignment.pl" and "21-Daligner_New.pl". 
+ 
+    sh pipeline.sh
+    
+ 6. Results
+ 
+    ./06-Daligner/SuperContig.fasta
+    
 
    
 # Quick Start
@@ -77,7 +119,7 @@ MaxOverhang_Overlap=100
 MinExtend_Overlap=1000
 
 #the min num path for contig pairs
-MinPathNum=3
+MinPathNum=6
 
 #the conditons used to merge the supercontigs and non-scaffolded contigs
 MinIdentity_Merge=98
@@ -390,4 +432,4 @@ Du, H., Liang, C. (2018). Assembly of chromosome-scale contigs by efficiently re
 
 #  Seeking Help
 
-The detailed usage is described in the man page available together with the source code. If you have questions about HERA, you may send the questions to cliang@genetics.ac.cn or huilongdu@genetics.ac.cn.
+The detailed usage is described in the man page available together with the source code. If you have questions about HERA, you may send the questions to cliang@genetics.ac.cn.

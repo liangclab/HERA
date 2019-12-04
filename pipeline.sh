@@ -43,7 +43,7 @@ MaxOverhang_Overlap=100
 MinExtend_Overlap=1000
 
 #the min num path for contig pairs
-MinPathNum=3
+MinPathNum=5
 
 #the conditons used to merge the supercontigs and non-scaffolded contigs
 MinIdentity_Merge=98
