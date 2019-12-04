@@ -34,28 +34,29 @@ The template looks like
 
 ############################### the parameters that can be changed by users ##########################################
 #the genome name(less than 5 words)
-genome_name=Human
+############################### the parameters which users can reset ##########################################
+#the genome name(less 5 words)
+genome_name=DJ
 
-#the whole genome assembled contigs or scaffolds
-genome_seq=
+#the whole genome assembled sequences with absolute path
+genome_seq=~/home/Genome.fasta
 
-#the corrected long reads
-Corrected_Pacbio=
+#the corrected pacbio file with absolute path
+Corrected_Pacbio=~/home/correctedpacbio.fasta
 
-#the enzyme used to form the bionano map(if no bionano map, neglecting this) 
-Enzyme=
+#the enzyme used to form the bionano map(if no bionano maps, neglect this parameter)
+Enzyme=GCTCTTC
 
-#the software position
-Working_Script=~/home/
-
+#the software with absolute path
+Working_Script=~/home/HERA-master/
 #the queue used to bsub jobs
-queue=
+queue=low
 
-#the DAZZ_DB software position
-DAZZ_DB=~/home/software/DAZZ_DB-master/
+#DAZZ_DB with absolute path
+DAZZ_DB=~/Genome_Assembly/software/DAZZ_DB-master/
 
-#the DALIGNER software position
-DALIGNER=~/home/software/DALIGNER-master/
+#DALIGNER with absolute path
+DALIGNER=~/Genome_Assembly/software/DALIGNER-master/
 
 #the positions apart from start or end
 InterIncluded_Side=25000
@@ -65,7 +66,7 @@ InterIncluded_Identity=99;
 InterIncluded_Coverage=99;
 
 #the pacbios selected for starting and ending
-MinIdentity=97
+MinIdentity=98
 MinCoverage=90
 MinLength=5000
 
@@ -127,20 +128,42 @@ Ctg_Position.txt
 ``` Shell
 #Make the working dirs
 mkdir 01-Pacbio_And_NonScaffold
+cd 01-Pacbio_And_NonScaffold
+$Working_Script/Check
+cd -
 mkdir 02-Pacbio-Alignment
+cd 02-Pacbio-Alignment
+$Working_Script/Check
+cd -
 mkdir 03-Pacbio-SelfAlignment
+cd 03-Pacbio-SelfAlignment
+$Working_Script/Check
+cd -
 mkdir 04-Graphing
+cd 04-Graphing
+$Working_Script/Check
+cd -
 mkdir 05-PathContig
+cd 05-PathContig
+$Working_Script/Check
+cd -
 mkdir 06-Daligner
+cd 06-Daligner
+$Working_Script/Check
+cd -
 mkdir 07-FilledGap
+cd 07-FilledGap
+$Working_Script/Check
+cd -
 mkdir 08-PathContig_Consensus
 mkdir 09-ReAssembly
+$Working_Script/Check
 
 #convert the fasta to lines
 $Working_Script/readstoline $genome_seq $genome_name-Genome.fasta C
 
 #split the sequences into two files with large contigs and small contigs
-$Working_Script/01-Filter_Raw_Contig_By_Length $genome_name-Genome.fasta Large_Contig.fasta Small_Contig.fasta 150000 15000
+$Working_Script/01-Filter_Raw_Contig_By_Length $genome_name-Genome.fasta Large_Contig.fasta Small_Contig.fasta 50000 15000
 #covert the fasta formate to lines
 $Working_Script/readstoline $Corrected_Pacbio $genome_name-CorrectedPacbio.fasta P
 
@@ -300,12 +323,13 @@ cd -
 #make the working dirs
 mkdir 10-Contig_Pairs
 cd 10-Contig_Pairs
+$Working_Script/Check
 touch overlap.txt
 
 #formating the contig pairs based on the paths
 $Working_Script/03-Formate_Contig_Pairs_By_Paths overlap.txt ../05-PathContig/ctg_clusters_uniq.txt Contig_Pairs.txt
 
-cat Contig_Pairs.txt |awk '{if($5>='$MinPathNum' && $6>='$MinPathNum' && $7>='$MinPathNum'){$8=$5+$6/3+$7/6;print $0;}}' >Contig_Pairs_Filtered.txt
+cat Contig_Pairs.txt |awk '{if(($5+$6/3+$7/6)>='$MinPathNum'){$8=$5+$6/3+$7/6;print $0;}}' >Contig_Pairs_Filtered.txt
 
 #selecting the final contig pairs with clustering based on scores
 $Working_Script/05-Merge_With_HighestScore_To_Sequence_By_Path Contig_Pairs_Filtered.txt ../Large_Contig.fasta SuperContig.fasta >Selected_Pairs.txt
