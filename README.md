@@ -5,7 +5,7 @@ HERA is a local assembly tool using assembled contigs and self-corrected long re
 It is important to note that even though HERA can be used to improve the sequence contiguity of highly heterozygous genomes, it require HiC data (and better also with BioNano data) to resolve the haplotype sequences. A new pipeline to do this is being developed but it is not included here.
 
 # Installation
-Please download HERA.zip, which contains all the executables and Perl scripts for running HERA (the other source files are not required to run HERA). Note that the excutable files must be set to the right permissions, ie, to be executable files. Assume you have a directory named HERA-master. All the executable files and Perl scripts of HERA package can be put in HERA-master/bin. The  "Working_Script" parameter in pipeline.sh needs to be set as HERA-master/bin and the running of pipeline.sh requires the executables in the bin directory.
+Assume the software HERA is under directory HERA. All the executable files of HERA package should be put in HERA/bin.
 
 The running of HERA requires a few other software programs. 
 1. Downloading and installing bwa-0.7.10
@@ -366,4 +366,4 @@ Du, H., Liang, C. (2018). Assembly of chromosome-scale contigs by efficiently re
 
 #  Seeking Help
 
-The detailed usage is described in the man page available together with the source code. If you have questions about HERA, you may send the questions to cliang@genetics.ac.cn.
+The detailed usage is described in the man page available together with the source code. If you have questions about HERA, you may send the questions to cliang@genetics.ac.cn or huilongdu@genetics.ac.cn.

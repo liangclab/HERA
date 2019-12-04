@@ -19,7 +19,7 @@ while(<IN>){
 	$content[0]=~/(\S+)\/0_\d+$/;
 	my $Pacbio=$1;
 	next if(exists $Existed_Pacbio{$Pacbio});
-	next if($content[5]<$MinIdentity || (! -B $0));
+	next if($content[5]<$MinIdentity);
 	my $coverage=($content[10]-$content[9])/$content[11]*100;
 	next if($coverage<$MinCoverage);
 	my $Start=$MinExtend;

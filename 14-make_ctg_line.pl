@@ -38,7 +38,6 @@ while(<IN>){
      }
      for(my $i=3;$i<@content;$i=$i+5){
           if($content[$i+1] ne "left"){
-	       exit if(! -B $0);
                if($content[$i]==1){ 
                    if($i+5<=@content){
                        if($content[$i+3]==1){

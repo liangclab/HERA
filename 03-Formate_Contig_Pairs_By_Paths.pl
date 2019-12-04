@@ -27,7 +27,6 @@ close(IN1);
 
 my %Contig_Pair_With_Path=();
 #R498_1627743_1/1808_11897 R498_4016954_1/0_16938 R498_3245081_1/183_16057 R498_5887543_1/0_14019 R498_4641610_1/283_14760 R498_5779396_1/498_14823 contig0107_size120001 R498_760764_1/14_22641 R498_5998020_1/0_25161 R498_5794087_1/44_22587 R498_5881788_1/32_21556 R498_5971505_1/12_12575  SuperScaffold_1.10-Tail-SuperScaffold_1.11-Head-BestMatching-Passing
-exit if(! -B $0);
 my %Used_Lines=();
 while(<IN2>){
 	chomp;
@@ -102,7 +101,6 @@ foreach my $left_ctg (keys %Contig_Pair_With_Path){
 	}
 }
 close(IN2);
-exit if(! -B $0);
 foreach my $key1 (keys %Contig_Pair_With_Overlap){
 	my $temp1=$Contig_Pair_With_Overlap{$key1};
 	foreach my $key2 (keys %$temp1){

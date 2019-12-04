@@ -22,14 +22,14 @@ while(<IN>){
     if($count<120){
         print OUT "#BSUB -J $genome-Map-$count
 #BSUB -o $count.out
-#BSUB -n 4
+#BSUB -n 1
 #BSUB -q $queue
 ";
      }
      elsif($count>=120){
         print OUT "#BSUB -J $genome-Map-$count
 #BSUB -o $count.out
-#BSUB -n 4
+#BSUB -n 1
 #BSUB -q $queue
 ";
      }

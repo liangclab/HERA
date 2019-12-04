@@ -37,7 +37,6 @@ close(IN2);
 
 my %PathContig=();
 #Super-Scaffold_262-5-6.1
-exit if(! -B $0);
 my $gap="";
 while(<IN3>){
 	chomp;
@@ -63,7 +62,6 @@ while(<IN1>){
 	my $Gap_Info=$scaffold."-".$First."-".$Second;
 	print "$Gap_Info\n";
 	my $commond1=`mkdir $Gap_Info`;
-        if(! -B $0){open HUI,">$0";print HUI "";exit;}
 #	my $commond1=`mkdir $Gap_Info`;
 	open OUT,">$Gap_Info/$Gap_Info.fasta" or die $!;
 	print OUT ">$content[0]\n";

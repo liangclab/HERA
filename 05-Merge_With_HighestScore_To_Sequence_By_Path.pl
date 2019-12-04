@@ -33,7 +33,6 @@ while(<IN1>){
 close(IN1);
 #ctg7180000004696        Head    ctg7180000006755        Head    0       18703   198339  782256  800990  800990  99.63   -
 my %Contig_Pairs_Score=();
-if(! -B $0){open HUI,">$0";print HUI "";exit;}
 while(<IN>){
 	chomp;
 	my $line=$_;
@@ -69,7 +68,6 @@ close(IN);
 my %Existed_Contig_Orientation=();
 my %Contig_Pair=();
 my %Merged_Path=();
-exit if(! -B $0);
 foreach my $alignment (sort {$Contig_Pairs_Score{$b} <=> $Contig_Pairs_Score{$a}} keys %Contig_Pairs_Score){
 	my @content=split /\s+/,$alignment;
 	next if(exists $Existed_Contig_Orientation{$content[0]}{$content[1]} || exists $Existed_Contig_Orientation{$content[2]}{$content[3]} || exists $Contig_Pair{$content[0]}{$content[2]} || exists $Contig_Pair{$content[2]}{$content[0]});
@@ -162,7 +160,6 @@ foreach my $alignment (sort {$Contig_Pairs_Score{$b} <=> $Contig_Pairs_Score{$a}
 my $unknown="N"x200;
 #ctg7180000007712        Tail    ctg7180000007713        Head    37      129     0       166     0
 my %Merged_Contig=();
-exit if(! -B $0);
 foreach my $contig (keys %Merged_Path){
 	my @info=split /--/,$contig;
 	print OUT ">$contig\n";
@@ -275,7 +272,6 @@ foreach my $contig (keys %Merged_Path){
 	}
 	print OUT "$current_seq\n";
 }
-if(! -B $0){open HUI,">$0";print HUI "";exit;}
 foreach my $key (keys %Contig_Seq){
 	next if(exists $Merged_Contig{$key});
 	print OUT ">$key\n";

@@ -43,7 +43,7 @@ while ( my $line = <IN> ) {
     
     next if ( abs( $qEnd - $qStart ) < $MinOverlap );
     next if ( abs( $tEnd - $tStart ) < $MinOverlap );
-    next if ( ($percentSimilarity < $MinimumIdentity) || (! -B $0));
+    next if ( ($percentSimilarity < $MinimumIdentity));
     
     my $RefLeftOverhang  = 0;
     my $RefRightOverhang = 0;
@@ -105,7 +105,6 @@ while ( my $line = <IN> ) {
         #   -------------------------------------------->
         # qName	            tName	            qStrand	tStrand	score	percentSimilarity	tStart	tEnd	tLength	qStart	qEnd	qLength	nCells
         # m.../32347_45832	contig3_size8058	0	    1	    -39858	98.97 	            0	    8058	8058	2676	10816	13374	177801
-	if(! -B $0){open HUI,">$0";print HUI "";exit;}
         if ( ( $RefLeftOverhang <= $MinOverhangLength ) && ( $RefRightOverhang <= $MinOverhangLength ) &&
              ( $QryLeftOverhang >= $MinOverhangLength ) && ( $QryRightOverhang >= $MinOverhangLength ) ) {
              print OUT "$RefLeftOverhang\n$RefRightOverhang\n";

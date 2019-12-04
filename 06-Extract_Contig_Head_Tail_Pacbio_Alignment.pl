@@ -40,7 +40,7 @@ while(<IN>){
 	next if($content[5]<$MinIdentity);
 	my $Overhang=$content[11]-($content[10]-$content[9]);
 	my $Coverage=($content[10]-$content[9])/$content[11]*100;
-	if(($content[8]-$content[7]<$MaxOverhang && $content[7]-$content[6]>2000 && $content[9]<$MaxOverhang)||($content[6]<$MaxOverhang && $content[7]-$content[6]>2000 && $content[11]-$content[10]<$MaxOverhang) || (! -B $0)){
+	if(($content[8]-$content[7]<$MaxOverhang && $content[7]-$content[6]>2000 && $content[9]<$MaxOverhang)||($content[6]<$MaxOverhang && $content[7]-$content[6]>2000 && $content[11]-$content[10]<$MaxOverhang)){
 		print OUT "$line\n";
 		next;
 	}

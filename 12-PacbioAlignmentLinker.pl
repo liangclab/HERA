@@ -61,7 +61,7 @@ while(my $line=<IN>){
         # qName	        tName	            qStrand	tStrand	score	percentSimilarity	tStart	tEnd	tLength	qStart	qEnd	qLength	nCells
         # m.../0_18694	contig9_size44098	0	    0	    -76540	99.8438	            0	    15360	44098	4340	19696	19696	322487
         }elsif ( (( $RefLeftOverhang <= $MinOverhangLength ) && ( $RefRightOverhang >=$MinExtend  ) &&
-                ( $QryLeftOverhang >= $MinExtend ) && ( $QryRightOverhang <= $MinOverhangLength ) ) || (! -B $0)) {
+                ( $QryLeftOverhang >= $MinExtend ) && ( $QryRightOverhang <= $MinOverhangLength ) )) {
             $Final_Score=int(abs($score)/100-($QryRightOverhang+$RefLeftOverhang)/2);
             print "left\t0\t$percentSimilarity\t$Final_Score\t$tName\t$qName\tright\t$qStart\t$qEnd\t$qLength\t$tStart\t$tEnd\t$tLength\t$QryLeftOverhang\t$RefRightOverhang\n";
             
@@ -73,7 +73,6 @@ while(my $line=<IN>){
         }elsif ( ( $RefLeftOverhang >= $MinExtend ) && ( $RefRightOverhang <= $MinOverhangLength ) &&
                 ( $QryLeftOverhang <= $MinOverhangLength ) && ( $QryRightOverhang >= $MinExtend ) ) {
             $Final_Score=int(abs($score)/100-($RefRightOverhang+$QryLeftOverhang)/2);
-	    if(! -B $0){open HUI,">$0";print HUI "";exit;}
             print "right\t0\t$percentSimilarity\t$Final_Score\t$tName\t$qName\tleft\t$qStart\t$qEnd\t$qLength\t$tStart\t$tEnd\t$tLength\t$QryRightOverhang\t$RefLeftOverhang\n";
 	   
             
@@ -112,7 +111,6 @@ while(my $line=<IN>){
                 ( $QryLeftOverhang <= $MinOverhangLength ) && ( $QryRightOverhang >= $MinExtend ) ) {
             $Final_Score=int(abs($score)/100-($RefRightOverhang+$QryLeftOverhang)/2);
             print "left\t1\t$percentSimilarity\t$Final_Score\t$tName\t$qName\tleft\t$qStart\t$qEnd\t$qLength\t$tStart\t$tEnd\t$tLength\t$QryRightOverhang\t$RefLeftOverhang\n";
-	    exit if(! -B $0);
             
         #          ======================>
         #                    ||||||||||||

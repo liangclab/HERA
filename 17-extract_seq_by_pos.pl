@@ -56,7 +56,6 @@ my $count_ctg=int (rand(10000));
 $count_ctg=$count_ctg*100000+1;
 my %ctg_existed=();
 my $Ctg_Name="";
-exit if(! -B $0);
 
 while(<IN1>){
       chomp;
@@ -243,7 +242,6 @@ while(<IN1>){
       }
       print "\n";
 }
-exit if(! -B $0);
 open OUT1,">non-connected-ctg.fasta" or die $!;
 my $count=0;
 my $all_len=0;

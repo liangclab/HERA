@@ -27,7 +27,6 @@ while(<IN1>){
       $ctg_ctg_line{$content[0]}{$content[2]}=$content[5]."-".$content[6]."-".$content[7]."-".$content[8]."-".$content[9]."-".$content[10]."-".$content[11]."-".$content[12]."-".$content[13]."-".$content[14]."-".$content[15]."-".$content[16]."-".$content[17];
       $ctg_ctg_line{$content[2]}{$content[0]}=$content[5]."-".$content[9]."-".$content[10]."-".$content[11]."-".$content[6]."-".$content[7]."-".$content[8]."-".$content[12]."-".$content[13]."-".$content[16]."-".$content[17]."-".$content[14]."-".$content[15];
 #     $ctg_ctg_overlap_len{$content[0]}{$content[2]}=$content[8]-$content[7]+$content[11]-$content[10];
-      exit if(! -B $0);
 }
 close(IN1);
 
@@ -88,7 +87,6 @@ close(IN5);
 
 #ctg7180000008354 0 0 right 0 left ctg7180000008355 0 0 right 0 left ctg7180000008356 0
 #into
-exit if(! -B $0);
 #(Ctg1 Chain Start End ) (Bac1 Chain Start End) (Start Length Ctg2 Chain nonsense End) (Bac2 Chain Start End) (Start Length Ctg3 Chain Nonsense)
 #(tig00001128 1 0 419678) (BAC5600|size153262/0_153262 0 63426 51228) (1 318643 tig00001132 0 0 318644) (BAC342|size252584/0_252584 0 66885 57303) (1 1003677 tig00001134 0 0)
 while(<IN3>){

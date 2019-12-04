@@ -7,21 +7,13 @@
 #################################################################################################################
 use warnings;
 use strict;
-sub reverse_complement{
-        my $input_seq=shift;
-        my $reverse=reverse $input_seq;
-        $reverse=~tr/ACGT/TGCA/;
-        $reverse=~tr/acgt/tgca/;
-        return $reverse;
-}
-
 my $infile1=shift;                               #Scaffold2Ctg_Gap.txt
 my $infile3=shift;                               #Prosudo_ScaffoldNonEnzyme2Contig.fasta
 my $infile4=shift;                               #PathContigRename.fasta
 my $outfile=shift;                               #Connected sequence
-my $minidentity=0.95;
+my $minidentity=0.96;
 my $maxoverhang=10000;
-my $minoverlap=1000;
+my $minoverlap=2000;
 
 open IN1,"<$infile1" or die $!;
 open IN3,"<$infile3" or die $!;
@@ -36,7 +28,6 @@ my %Contig_Position=();
 my %Contig_Pair=();
 my %Total_Contig=();
 my %Contig_In_Scaffold=();
-my %PathContig_Ori=();
 while(<IN1>){
 	chomp;
 	my $info=$_;
@@ -69,18 +60,17 @@ while(<IN1>){
 		chomp;
 		my $line=$_;
 		my @content=split /\s+/,$line;
+		next if(@content!=10);
 		if($content[1]=~/Super-Scaffold_\d+\.\d+/ && $content[5]=~/Super-Scaffold_\d+\.\d+/){
 			$Total_Contig{$content[1]}=$content[4];
 			$Total_Contig{$content[5]}=$content[8];
 		}
-		next if($content[0] eq "Strand");
-#		next if($content[0] ne "+");
+		next if($content[0] ne "+");
 		next if($content[3]-$content[2]<$minoverlap);
 		my $identity=1-($content[9]/($content[3]-$content[2]+$content[7]-$content[6]))*2;
 		next if($identity<$minidentity);
 		if($Gap_Len<500){
 			if($content[1]=~/Super-Scaffold_\d+\.(\d+)/ && $content[5]=~/Super-Scaffold_\d+\.(\d+)/){
-				next if($content[0] eq "-");
 				$content[1]=~/Super-Scaffold_\d+\.(\d+)/;
 				my $First_Ctg=$1;
 				$content[5]=~/Super-Scaffold_\d+\.(\d+)/;
@@ -115,14 +105,12 @@ while(<IN1>){
 					if(!exists $PathContig_Info{$content[5]}{'left'}){
 						$PathContig_Info{$content[5]}{'left'}{0}=$line;
 						$PathContig_Info{$content[5]}{'left'}{1}=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
-						$PathContig_Info{$content[5]}{'left'}{2}=$content[0];
 					}
 					else{
 						my $Overlap_Score=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
 						if($Overlap_Score>$PathContig_Info{$content[5]}{'left'}{1}){
 							$PathContig_Info{$content[5]}{'left'}{0}=$line;
 							$PathContig_Info{$content[5]}{'left'}{1}=$Overlap_Score;
-							$PathContig_Info{$content[5]}{'left'}{2}=$content[0];#chain
 						}
 					}
 				}
@@ -135,14 +123,12 @@ while(<IN1>){
 					if(!exists $PathContig_Info{$content[5]}{'right'}){
                                                 $PathContig_Info{$content[5]}{'right'}{0}=$line;
                                                 $PathContig_Info{$content[5]}{'right'}{1}=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
-						$PathContig_Info{$content[5]}{'right'}{2}=$content[0]; #chain
                                         }
                                         else{
                                                 my $Overlap_Score=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
                                                 if($Overlap_Score>$PathContig_Info{$content[5]}{'right'}{1}){
                                                         $PathContig_Info{$content[5]}{'right'}{0}=$line;
                                                         $PathContig_Info{$content[5]}{'right'}{1}=$Overlap_Score;
-							$PathContig_Info{$content[5]}{'right'}{2}=$content[0]; #chain
                                                 }
                                         }
 				}
@@ -165,14 +151,12 @@ while(<IN1>){
                                         if(!exists $PathContig_Info{$content[5]}{'left'}){
                                                 $PathContig_Info{$content[5]}{'left'}{0}=$line;
                                                 $PathContig_Info{$content[5]}{'left'}{1}=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
-						$PathContig_Info{$content[5]}{'left'}{2}=$content[0]; #chain
                                         }
                                         else{
                                                 my $Overlap_Score=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
                                                 if($Overlap_Score>$PathContig_Info{$content[5]}{'left'}{1}){
                                                         $PathContig_Info{$content[5]}{'left'}{0}=$line;
                                                         $PathContig_Info{$content[5]}{'left'}{1}=$Overlap_Score;
-							$PathContig_Info{$content[5]}{'left'}{2}=$content[0]; #chain
                                                 }
                                         }
                                 }
@@ -185,14 +169,12 @@ while(<IN1>){
                                         if(!exists $PathContig_Info{$content[5]}{'right'}){
                                                 $PathContig_Info{$content[5]}{'right'}{0}=$line;
                                                 $PathContig_Info{$content[5]}{'right'}{1}=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
-						$PathContig_Info{$content[5]}{'right'}{2}=$content[0]; #chain
                                         }
                                         else{
                                                 my $Overlap_Score=($Loverlap+$Roverlap)*$identity-$Loverhang-$Roverhang;
                                                 if($Overlap_Score>$PathContig_Info{$content[5]}{'right'}{1}){
                                                         $PathContig_Info{$content[5]}{'right'}{0}=$line;
                                                         $PathContig_Info{$content[5]}{'right'}{1}=$Overlap_Score;
-							$PathContig_Info{$content[5]}{'right'}{2}=$content[0]; #chain
                                                 }
                                         }
                                 }
@@ -200,11 +182,9 @@ while(<IN1>){
                 }
 	}
 	close(IN);
-=pod
 #+       Super-Scaffold_1067.1   4077    5089    364118  Super-Scaffold_1067.2   12910   13930   314580  153
 #+       Super-Scaffold_1067.1   4077    5089    364118  Super-Scaffold_1067-1-2.58017   44552   45571   55596   154
 #+       Super-Scaffold_1067.2   3314    23988   314580  Super-Scaffold_1067-1-2.58017   35051   55596   55596   331
-=cut
         #selecting the best match path based on the gap length
         my $Best_Path_Score=0;
 	my $Best_Path_Left="";               #recording the left alignment of best path
@@ -214,7 +194,6 @@ while(<IN1>){
 	foreach my $path (keys %PathContig_Info){
 		if($Gap_Len<500){ #if with overlap, selecting the highest score path
 			next if(!exists $PathContig_Info{$path}{'left'} or !exists $PathContig_Info{$path}{'right'});
-			next if($PathContig_Info{$path}{'left'}{2} ne $PathContig_Info{$path}{'right'}{2});
 			if($PathContig_Info{$path}{'left'}{1}+$PathContig_Info{$path}{'right'}{1}>$Best_Path_Score){
 				$Best_Path_Score=$PathContig_Info{$path}{'left'}{1}+$PathContig_Info{$path}{'right'}{1};
 				$Best_Path_Left=$PathContig_Info{$path}{'left'}{0};
@@ -223,7 +202,6 @@ while(<IN1>){
 		}
 		elsif($Gap_Len>=500){ #if without overlap, selecting the best match path
 			next if(!exists $PathContig_Info{$path}{'left'} or !exists $PathContig_Info{$path}{'right'});
-			next if($PathContig_Info{$path}{'left'}{2} ne $PathContig_Info{$path}{'right'}{2});
 			my @Left_Line=split /\s+/,$PathContig_Info{$path}{'left'}{0};
 			my @Right_Line=split /\s+/,$PathContig_Info{$path}{'right'}{0};
 			my $Path_Len_Used=$Right_Line[7]-$Left_Line[6];
@@ -251,8 +229,6 @@ while(<IN1>){
 		elsif($Best_Path_Left ne "" && $Best_Path_Right ne ""){
 			my @Left_Line=split /\s+/,$Best_Path_Left;
 			my @Right_Line=split /\s+/,$Best_Path_Right;
-			$PathContig_Ori{$Left_Line[5]}{'left'}=$Left_Line[0];
-			$PathContig_Ori{$Right_Line[5]}{'right'}=$Right_Line[0];
 			print PATH "$Best_Path_Left\n$Best_Path_Right\n";
 			$Contig_Position{$Left_Line[1]}{'End'}=$Left_Line[3]; #left contig end
 			$Contig_Position{$Left_Line[1]}{'Len'}=$Left_Line[4]; #left contig length
@@ -302,7 +278,6 @@ while(<IN4>){
 }
 close(IN4);
 
-
 foreach my $key (keys %Total_Contig){
 	if(!exists $Contig_Position{$key}){
 		$Contig_Position{$key}{'Start'}=0;
@@ -319,7 +294,6 @@ foreach my $key (keys %Total_Contig){
 
 my %Scaffold_Contig_Seq=();
 $sign="";
-
 while(<IN3>){
 	chomp;
 	my $line=$_;
@@ -327,13 +301,6 @@ while(<IN3>){
 		$sign=$1;
 	}
 	else{
-		if(exists $Contig_In_Scaffold{$sign} && !exists $Contig_Position{$sign}{'Start'}){
-			$Contig_Position{$sign}{'Start'}=0;
-		}
-		if(exists $Contig_In_Scaffold{$sign} && !exists $Contig_Position{$sign}{'End'}){
-			$Contig_Position{$sign}{'End'}=length($line);
-		}
-			
 		$Scaffold_Contig_Seq{$sign}=$line;
 		if(!exists $Contig_In_Scaffold{$sign}){
 			print OUT ">$sign\n";
@@ -359,7 +326,6 @@ while(<IN1>){
 	chomp;
 	my $line=$_;
 	my @content=split /\s+/,$line;
-#	print "$content[0]\t$content[1]\n";
 	$content[0]=~/(Super-Scaffold_\d+)\.\d+/;
 	my $Scaffold=$1;
 	print POS "$content[0]\t$Contig_Position{$content[0]}{'Start'}\t$Contig_Position{$content[0]}{'End'}\n";
@@ -393,15 +359,9 @@ while(<IN1>){
 			$Current_Total_Len{$Current_Count}{'end'}=length($Current_Seq)+$Path_Len+1;
 			$Current_Total_Len{$Current_Count}{'type'}="Path";
 			$Current_Count++;
-			print "$content[0]\t$Path_Len\t$Contig_Position{$content[0]}{'Path'}\n";
-			if(($PathContig_Ori{$Contig_Position{$content[0]}{'Path'}}{'left'} eq $PathContig_Ori{$Contig_Position{$content[0]}{'Path'}}{'right'}) && ($PathContig_Ori{$Contig_Position{$content[0]}{'Path'}}{'left'} eq "+")){
-	               	        $Path_Seq=substr($Path_Contig_Seq{$Contig_Position{$content[0]}{'Path'}},$Contig_Position{$Contig_Position{$content[0]}{'Path'}}{'Start'},$Path_Len);
-			}
-			elsif(($PathContig_Ori{$Contig_Position{$content[0]}{'Path'}}{'left'} eq $PathContig_Ori{$Contig_Position{$content[0]}{'Path'}}{'right'}) && ($PathContig_Ori{$Contig_Position{$content[0]}{'Path'}}{'left'} eq "-")){
-				my $reverse_seq=reverse_complement($Path_Contig_Seq{$Contig_Position{$content[0]}{'Path'}});
-				$Path_Seq=substr($reverse_seq,$Contig_Position{$Contig_Position{$content[0]}{'Path'}}{'Start'},$Path_Len);
-			}
-			print POS "$Contig_Position{$content[0]}{'Path'}\t$Contig_Position{$Contig_Position{$content[0]}{'Path'}}{'Start'}\t$Contig_Position{$Contig_Position{$content[0]}{'Path'}}{'End'}\t$PathContig_Ori{$Contig_Position{$content[0]}{'Path'}}{'left'}\n";
+
+               	        $Path_Seq=substr($Path_Contig_Seq{$Contig_Position{$content[0]}{'Path'}},$Contig_Position{$Contig_Position{$content[0]}{'Path'}}{'Start'},$Path_Len);
+			print POS "$Contig_Position{$content[0]}{'Path'}\t$Contig_Position{$Contig_Position{$content[0]}{'Path'}}{'Start'}\t$Contig_Position{$Contig_Position{$content[0]}{'Path'}}{'End'}\n";
               	}
 		else{
 			$Current_Total_Len{$Current_Count}{'start'}=length($Current_Seq)-$Contig_Position{$content[1]}{'Start'};

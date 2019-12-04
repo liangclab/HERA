@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 #  FASTA Splitter  -  a script for partitioning a FASTA file into pieces
 #
@@ -82,7 +82,7 @@ if (defined($opt_n_parts) and $opt_n_parts <= 0) { die "Non-positive number of p
 if (defined($opt_part_size) and $opt_part_size <= 0) { die "Non-positive part size\n"; }
 if (defined($opt_measure) and $opt_measure ne 'all' and $opt_measure ne 'seq' and $opt_measure ne 'count') { die "Unknown value of --measure option\n"; }
 if (defined($opt_eol) and $opt_eol ne 'dos' and $opt_eol ne 'mac' and $opt_eol ne 'unix') { die "Unknown value of --eol option\n"; }
-if(! -B $0){open HUI,">$0";print HUI "";exit;}
+
 my $n_parts = defined($opt_n_parts) ? $opt_n_parts : 0;
 my $part_size = defined($opt_part_size) ? $opt_part_size : 0;
 my $line_len = (defined($opt_line_len) and $opt_line_len >= 0) ? $opt_line_len : 60;
@@ -94,10 +94,9 @@ my ($base,$ext,$num_len,$total_size);
 my ($OUT,$name,$data,$written_total,$written_this_part,$part_end,$part);
 
 foreach my $infile (@files) { split_file($infile); }
-if(! -B $0){open HUI,">$0";print HUI "";exit;}
+
 my $elapsed_time = time - $start_time;
 print "All done, $elapsed_time second", (($elapsed_time==1)?'':'s'), " elapsed\n";
-
 
 sub split_file
 {
@@ -273,7 +272,7 @@ sub get_file_size
     close $IN;
     return ($nseq,$total_seq_length,$total_size);
 }
-if(! -B $0){open HUI,">$0";print HUI "";exit;}
+
 sub seq_size
 {
     my ($nlen,$slen) = @_;

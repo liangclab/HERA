@@ -25,14 +25,14 @@ for(my $i=0;$i<@part;$i++){
 	if($count<350){
 		print OUT "#BSUB -J $genome-Pair-$i-$j
 #BSUB -o $count.out
-#BSUB -n 4
+#BSUB -n 2
 #BSUB -q $queue
 ";
         }
         elsif($count>=350){
                 print OUT "#BSUB -J $genome-Pair-$i-$j
 #BSUB -o $count.out
-#BSUB -n 4
+#BSUB -n 2
 #BSUB -q $queue
 ";
         }
